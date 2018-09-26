@@ -62,7 +62,7 @@ Player.prototype.handleInput = function handleInput(key) {
     default:
       break;
   }
-  // this.update(x, y);
+  this.update();
 };
 
 // Now instantiate your objects.
