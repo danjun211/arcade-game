@@ -2,7 +2,7 @@
 var Enemy = function(y, speed) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
-  this.x = -1 * Math.floor(Math.random() * 6 + 2) * 100;
+  this.x = -1 * Math.floor(Math.random() * 6 + 2) * 101;
   this.y = y;
   this.speed = speed;
   // The image/sprite for our enemies, this uses
@@ -16,7 +16,7 @@ Enemy.prototype.update = function(dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
-  this.x += dt * this.speed / 100;
+  this.x += dt * this.speed / 101;
 };
 
 // Draw the enemy on the screen, required method for game
@@ -28,7 +28,7 @@ Enemy.prototype.render = function() {
 // This class requires an update(), render() and
 // a handleInput() method.
 function Player() {
-  this.x = 200;
+  this.x = 202;
   this.y = 400;
   this.sprite = "images/char-boy.png";
 }
@@ -40,23 +40,23 @@ Player.prototype.handleInput = function handleInput(key) {
   console.log(this.x, this.y);
   switch (key) {
     case "left":
-      if (this.x >= 100) {
-        this.x -= 100;
+      if (this.x > 0) {
+        this.x -= 101;
       }
       break;
     case "right":
-      if (this.x <= 300) {
-        this.x += 100;
+      if (this.x < 404) {
+        this.x += 101;
       }
       break;
     case "up":
       if (this.y >= 60) {
-        this.y -= 85;
+        this.y -= 83;
       }
       break;
     case "down":
       if (this.y < 400) {
-        this.y += 85;
+        this.y += 83;
       }
       break;
     default:
@@ -74,7 +74,7 @@ var player = new Player();
 allEnemies.forEach(function moveEnemy(enemy) {
   setInterval(function () {
     if(enemy.x > 500) {
-      enemy.x = -1 * Math.floor(Math.random() * 6 + 2) * 100;
+      enemy.x = -1 * Math.floor(Math.random() * 6 + 2) * 101;
     } else {
       enemy.update(1);
     }
@@ -96,7 +96,7 @@ document.addEventListener("keyup", function(e) {
 
 function createEnemies(num) {
   var array = [];
-  var yPositions = [60, 145, 230];
+  var yPositions = [72, 155, 238];
   var levels = [100, 200, 300, 400, 500];
 
   for(var i = 1; i <= num; i++) {
@@ -105,3 +105,19 @@ function createEnemies(num) {
 
   return array;
 }
+
+const modalSelectChar = document.querySelector(".select-char");
+const shadow = document.querySelector(".shadow");
+const characterList = document.querySelector(".character-list");
+const btnStart = document.getElementById("btn-start");
+characterList.addEventListener("change", e => {
+  if(e.target.classList.value === "rdo-player") {
+    player.sprite = e.target.previousElementSibling.getAttribute("src");
+  }
+});
+
+btnStart.addEventListener("click", (e) => {
+  Engine(window);
+  modalSelectChar.classList.add("hide");
+  shadow.classList.add("hide");
+});
