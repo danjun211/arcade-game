@@ -79,7 +79,6 @@ var Engine = function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -91,7 +90,11 @@ var Engine = function(global) {
      */
     function updateEntities(dt) {
         allEnemies.forEach(function(enemy) {
-            enemy.update(dt);
+            if(enemy.x > 500) {
+                enemy.x = -1 * Math.floor(Math.random() * 6 + 2) * 101;
+            } else {
+                enemy.update(dt);
+            }
         });
         player.update();
     }

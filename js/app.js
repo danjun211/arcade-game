@@ -1,7 +1,8 @@
 // Enemies our player must avoid
-var Enemy = function(y, speed) {
+var Enemy = function(y, speed, id) {
   // Variables applied to each of our instances go here,
   // we've provided one for you to get started
+  this.id = id;
   this.x = -1 * Math.floor(Math.random() * 6 + 2) * 101;
   this.y = y;
   this.speed = speed;
@@ -16,7 +17,11 @@ Enemy.prototype.update = function(dt) {
   // You should multiply any movement by the dt parameter
   // which will ensure the game runs at the same speed for
   // all computers.
-  this.x += dt * this.speed / 101;
+  this.x += dt * this.speed;
+  if((player.x - 60 <= this.x  && this.x <= player.x + 60 ) 
+        && (this.y - 10 <= player.y && player.y <= this.y + 10)) {
+    player.reset();
+  }
 };
 
 // Draw the enemy on the screen, required method for game
@@ -32,12 +37,17 @@ function Player() {
   this.y = 400;
   this.sprite = "images/char-boy.png";
 }
-Player.prototype.update = function update() {};
+Player.prototype.reset = function update() {
+  this.x = 202;
+  this.y = 400;
+};
+Player.prototype.update = function update() {
+  // console.log(this.x, this.y);
+};
 Player.prototype.render = function render() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 Player.prototype.handleInput = function handleInput(key) {
-  console.log(this.x, this.y);
   switch (key) {
     case "left":
       if (this.x > 0) {
@@ -62,24 +72,21 @@ Player.prototype.handleInput = function handleInput(key) {
     default:
       break;
   }
-  this.update();
+  if(this.y < 0 && !GameInfo.isProcessing) {
+    GameInfo.isProcessing = true;
+    setTimeout(() => {
+      this.reset()
+      if(GameInfo.MAX_LEVEL > GameInfo.level) {
+        GameInfo.level++;
+        allEnemies = changeLevel(allEnemies, GameInfo.level);
+      } else {
+        alert("Clear!");
+      }
+      GameInfo.isProcessing = false;
+      GameInfo.setLevelView();
+    }, 100);
+  }
 };
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-var allEnemies = createEnemies(6);
-var player = new Player();
-
-allEnemies.forEach(function moveEnemy(enemy) {
-  setInterval(function () {
-    if(enemy.x > 500) {
-      enemy.x = -1 * Math.floor(Math.random() * 6 + 2) * 101;
-    } else {
-      enemy.update(1);
-    }
-  }, 1);
-});
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
@@ -97,10 +104,10 @@ document.addEventListener("keyup", function(e) {
 function createEnemies(num) {
   var array = [];
   var yPositions = [72, 155, 238];
-  var levels = [100, 200, 300, 400, 500];
+  var levels = [200, 300, 400, 500, 600];
 
   for(var i = 1; i <= num; i++) {
-    array.push(new Enemy(yPositions[i % 3], levels[Math.floor((i - 1)/ 3)]));
+    array.push(new Enemy(yPositions[i % 3], levels[Math.floor((i - 1)/ 3)], i));
   }
 
   return array;
@@ -110,14 +117,48 @@ const modalSelectChar = document.querySelector(".select-char");
 const shadow = document.querySelector(".shadow");
 const characterList = document.querySelector(".character-list");
 const btnStart = document.getElementById("btn-start");
+const infoContainer = document.getElementById("info-container");
+const h1LevelNum = infoContainer.querySelector(".num");
+
+let allEnemies, player, enemiesIntervalId;
+
+const GameInfo = {
+  challenge: 0,
+  fail: 0,
+  level: 1,
+  isProcessing: false,
+  MAX_LEVEL: 5,
+
+  setLevelView: function setLevelView() {
+    h1LevelNum.textContent = this.level;
+  }
+};
+
 characterList.addEventListener("change", e => {
   if(e.target.classList.value === "rdo-player") {
     player.sprite = e.target.previousElementSibling.getAttribute("src");
   }
 });
 
+function changeLevel(enemies, level) {
+  enemies = createEnemies(level * 2);
+
+  return enemies;
+}
+
 btnStart.addEventListener("click", (e) => {
-  Engine(window);
+  // Now instantiate your objects.
+  // Place all enemy objects in an array called allEnemies
+  // Place the player object in a variable called player
+  player = new Player();
+
+  allEnemies = changeLevel(allEnemies, GameInfo.level);  
+
+  engine = Engine(window);
+
   modalSelectChar.classList.add("hide");
   shadow.classList.add("hide");
+  infoContainer.classList.remove("hide");
 });
+
+var engine;
