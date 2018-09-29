@@ -18,6 +18,8 @@ Enemy.prototype.update = function(dt) {
   // which will ensure the game runs at the same speed for
   // all computers.
   this.x += dt * this.speed;
+  
+  // check whether this collide player
   if((player.x - 60 <= this.x  && this.x <= player.x + 60 ) 
         && (this.y - 10 <= player.y && player.y <= this.y + 10)) {
     player.reset();
@@ -41,9 +43,7 @@ Player.prototype.reset = function update() {
   this.x = 202;
   this.y = 400;
 };
-Player.prototype.update = function update() {
-  // console.log(this.x, this.y);
-};
+Player.prototype.update = function update() {};
 Player.prototype.render = function render() {
   ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
@@ -72,6 +72,7 @@ Player.prototype.handleInput = function handleInput(key) {
     default:
       break;
   }
+  // if player reach destination, change level and reset position of player.
   if(this.y < 0 && !GameInfo.isProcessing) {
     GameInfo.isProcessing = true;
     setTimeout(() => {
@@ -103,9 +104,10 @@ document.addEventListener("keyup", function(e) {
 
 function createEnemies(num) {
   var array = [];
-  var yPositions = [72, 155, 238];
+  var yPositions = [72, 155, 238]; // y points of enemies
   var levels = [200, 300, 400, 500, 600];
 
+  // place enemies on the map depends on yPositions, and give them diffent speed.
   for(var i = 1; i <= num; i++) {
     array.push(new Enemy(yPositions[i % 3], levels[Math.floor((i - 1)/ 3)], i));
   }
@@ -134,30 +136,40 @@ const GameInfo = {
   }
 };
 
+// character select event
 characterList.addEventListener("change", e => {
   if(e.target.classList.value === "rdo-player") {
     player.sprite = e.target.previousElementSibling.getAttribute("src");
   }
 });
 
+// change game level
 function changeLevel(enemies, level) {
-  enemies = createEnemies(level * 2);
+
+  enemies = createEnemies(level * 2); // set enemies depends on current level 
 
   return enemies;
 }
 
+// Game Start!
 btnStart.addEventListener("click", (e) => {
   // Now instantiate your objects.
   // Place all enemy objects in an array called allEnemies
   // Place the player object in a variable called player
+
+  // init player that you selected
   player = new Player();
 
+  // init enemies
   allEnemies = changeLevel(allEnemies, GameInfo.level);  
 
+  // Execute game engine
   engine = Engine(window);
 
+  // hide intro modal
   modalSelectChar.classList.add("hide");
   shadow.classList.add("hide");
+  // show canvas
   infoContainer.classList.remove("hide");
 });
 
