@@ -1,19 +1,25 @@
 # Arcade Game
 
-## Table of Contents
+[Go to play](https://yeolsa.github.io/arcade-game)
 
-* [How to play](#How to play)
-* [TODO](#TODO)
+### Table of Contents
 
-## How to play
+* [How to play](#howtoplay)
+* [Todos](#Todos)
+
+### How to play{#howtoplay}
 
 * Select your character
 * Click start button
 * Move you to end of the map avoiding bugs
 
+### Todos
 
-## TODO
+* Add Lives of player
+* Implement earning game score and collecting gem
+* Add restart game
 
-* Lives of player
-* Game Score and Gem
-* Retry function
+License
+----
+
+MIT

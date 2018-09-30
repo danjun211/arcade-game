@@ -1,0 +1,23 @@
+{
+  "name": "frontend-nanodegree-arcade-game",
+  "version": "1.0.0",
+  "description": "* [How to play](#How to play)\r * [TODO](#TODO)",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gh-pages -d dist -r https://github.com/yeolsa/arcade-game.git"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeolsa/arcade-game.git"
+  },
+  "author": "LeeJunyeol",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yeolsa/arcade-game/issues"
+  },
+  "homepage": "http://yeolsa.github.io/arcade-game",
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
+  }
+}
