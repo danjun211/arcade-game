@@ -19,8 +19,8 @@ Move player to end of map. Keep in mind that avoid bugs!
 
 ### Screenshots
 
-![play img 1](/images/play-img-1.PNG)
-![play img 2](/images/play-img-2.PNG)
+![play img 1](/images/play-img-1.PNG =250x)
+![play img 2](/images/play-img-2.PNG =250x)
 
 ### Todos
 
