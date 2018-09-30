@@ -4,10 +4,10 @@
 
 ### Table of Contents
 
-* [How to play](#howtoplay)
+* [How to play](#how-to-play)
 * [Todos](#Todos)
 
-### How to play{#howtoplay}
+### How to play
 
 * Select your character
 * Click start button
